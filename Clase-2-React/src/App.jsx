@@ -1,13 +1,15 @@
 import React from 'react'
 import Navbar from './Components/Navbar'
+import { Route, Routes } from 'react-router'
+import HomeScreen from './Screens/HomeScreen'
 
 
 const App = () => {
   return (
-    <div>
-      <Navbar title={'Hola mundo'}/>
-      <div className=''>App {1 + 1}</div>
-    </div>
+    <Routes>
+      <Route path='/' element={<HomeScreen/>}/>
+      <Route path='/home' element={<HomeScreen/>}/>
+    </Routes>
   )
 }
 
