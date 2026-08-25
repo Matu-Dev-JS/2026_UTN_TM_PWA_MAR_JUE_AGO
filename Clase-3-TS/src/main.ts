@@ -103,6 +103,8 @@ console.log('Cantidad habitantes brazil ' + paises[1].cant_hab)
 //posicion/coordenada
 let posicion_del_usuario : [number, number] = [55, -55]
 
+
+
 //enum
 //te permite guardar un conjunto de valores posibles para un x campo
 //Los roles de un usuario 
