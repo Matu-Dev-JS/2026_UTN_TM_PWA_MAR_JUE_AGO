@@ -37,7 +37,19 @@ class Persona{
         this.nombre = nombre
         this.edad = edad
         this.dinero=0
-        this.nivel=1
+        this._nivel=1
+    }
+    mostrarNivel(){
+        console.log(`El nivel es ${this._nivel}`)
+    }
+
+    _aumentarDinero(dinero){
+        this.dinero = this.dinero + dinero
+    }
+
+    init(){
+        let cantidad_aumento = nivel * 10
+        this._aumentarDinero(cantidad_aumento)
     }
 }
 
@@ -46,7 +58,7 @@ class Persona{
 
 const persona_4 = new Persona('pepe', 60)
 
-console.log(persona_4)
+console.log(persona_4.mostrarNivel())
 
 //En programacion orientada a objetos el estado de nuestra aplicacion siempre seran objetos
 //Cada uno de estos objetos seran creados mediante clases
