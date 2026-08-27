@@ -57,6 +57,12 @@ Cada producto tendra:
     id
 Declarar la clase Producto para poder tener productos en el programa
 Crear almenos 3 productos
+
+
+- aumentarStock(nuevo_stock) => acumula sobre el stock existente
+- aumentarPrecio(porcentaje_aumento) => subir el precio por el porcentaje de aumento
+- determinarPrecio(precio) => asignar ese precio al producto
+- vender(cantidad_vendida) => Evaluar si el stock es valido para esa cantidad y caso de serlo decrementar el stock y devolver el precio final. Sino por consola decir 'No hay stock suficiente
 */
 
 
