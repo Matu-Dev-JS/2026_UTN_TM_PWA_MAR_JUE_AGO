@@ -224,3 +224,69 @@ class ManejadorProductos {
 
 }
 
+class Bicicleta {
+    ruedas = 2
+    rodado: number
+    asiento: string
+
+    constructor(
+        rodado: number,
+        asiento: string
+    ){
+        this.rodado = rodado
+        this.asiento = asiento
+    }
+}
+
+class BicicletaConCambios extends Bicicleta {
+
+    cantidadCambios: number
+
+    constructor(
+        rodado: number, 
+        asiento: string, 
+        cantidadCambios: number
+    ) {
+        //Si heradamos de una clase HAY QUE USAR SUPER
+        //super hace referencia a la funcion constructora de la clase que heradamos
+        //super es la invocacion de la funcion constructora de la clase que heradamos
+        super(rodado, asiento)
+        this.cantidadCambios = cantidadCambios
+
+    }
+
+}
+
+/* const bicicleta_pro = new BicicletaConCambios(28, 'comodo', 7)
+
+const bicicleta_normal = new Bicicleta(26, 'plastico')
+
+console.log(bicicleta_pro, bicicleta_normal)
+
+console.log(bicicleta_pro instanceof Bicicleta)
+console.log(bicicleta_pro instanceof BicicletaConCambios)
+
+console.log(bicicleta_normal instanceof BicicletaConCambios) */
+
+/* 
+
+Crear 3 ejemplos de cada 1
+
+Usuario
+    id
+    nombre
+    edad
+    dni
+
+Empleado hereda de Usuario
+    sueldo
+    puesto
+    empresa
+    horario_ingreso: string '07:00'
+    horario_egreso: string '16:00'
+    dias_semana_laboral: string[]
+
+Pasante hereda de Empleado
+    fecha_inicio_pasantia: string
+    fecha_fin_pasantia: string
+*/
