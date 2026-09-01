@@ -204,23 +204,23 @@ class ManejadorProductos {
         }
         return productoConMenosStock
     }
-   /*  
-    //Opcion viable, devuelve el/los producto con stock minimo (contempla productos con mismo stock)
-    buscarProductoProximoAReponer(): Producto[] | null {
-        if (this.productos.length === 0) {
-            return null;
-        }
-        let productoMinimo: Producto[] = [this.productos[0]];
-        for (const producto of this.productos) {
-            if (producto.stock < productoMinimo[0].stock) {
-                productoMinimo = [producto];
-            }
-            else if (producto.stock === productoMinimo[0].stock) {
-                productoMinimo.push(producto);
-            }
-        }
-        return productoMinimo;
-    } */
+    /*  
+     //Opcion viable, devuelve el/los producto con stock minimo (contempla productos con mismo stock)
+     buscarProductoProximoAReponer(): Producto[] | null {
+         if (this.productos.length === 0) {
+             return null;
+         }
+         let productoMinimo: Producto[] = [this.productos[0]];
+         for (const producto of this.productos) {
+             if (producto.stock < productoMinimo[0].stock) {
+                 productoMinimo = [producto];
+             }
+             else if (producto.stock === productoMinimo[0].stock) {
+                 productoMinimo.push(producto);
+             }
+         }
+         return productoMinimo;
+     } */
 
 }
 
@@ -232,7 +232,7 @@ class Bicicleta {
     constructor(
         rodado: number,
         asiento: string
-    ){
+    ) {
         this.rodado = rodado
         this.asiento = asiento
     }
@@ -243,8 +243,8 @@ class BicicletaConCambios extends Bicicleta {
     cantidadCambios: number
 
     constructor(
-        rodado: number, 
-        asiento: string, 
+        rodado: number,
+        asiento: string,
         cantidadCambios: number
     ) {
         //Si heradamos de una clase HAY QUE USAR SUPER
@@ -289,4 +289,122 @@ Empleado hereda de Usuario
 Pasante hereda de Empleado
     fecha_inicio_pasantia: string
     fecha_fin_pasantia: string
+*/
+
+type DiaSemana = 'lunes' | 'martes' | 'miercoles' | 'jueves' | 'viernes' | 'sabado' | 'domingo'
+type Nombre = string
+type Roles = "user" | 'admin' | 'staff'
+type Estado = 'accepted' | 'pending' | 'rejected' | 'open'
+
+let nombre : Nombre = 'pepe'
+
+class Usuario {
+    id: number
+    nombre: string
+    edad: number
+    dni: string
+    dinero: number = 0
+    constructor(id: number, nombre: string, edad: number, dni: string) {
+        this.id = id
+        this.nombre = nombre
+        this.edad = edad
+        this.dni = dni
+    }
+}
+
+class Empleado extends Usuario {
+    sueldo: number
+    puesto: string
+    empresa: string
+    horario_ingreso: string
+    horario_egreso: string
+    dias_semana_laboral: DiaSemana[]
+    constructor(
+        id: number,
+        nombre: string,
+        edad: number,
+        dni: string,
+        sueldo: number,
+        puesto: string,
+        empresa: string,
+        horario_ingreso: string,
+        horario_egreso: string,
+        dias_semana_laboral: DiaSemana[]
+    ) {
+        super(id, nombre, edad, dni)
+        this.sueldo = sueldo
+        this.puesto = puesto
+        this.empresa = empresa
+        this.horario_ingreso = horario_ingreso
+        this.horario_egreso = horario_egreso
+        this.dias_semana_laboral = dias_semana_laboral
+    }
+
+    cobrarSueldo (): void{
+        const PORCENTAJE_APORTE = 10
+        let contribucion = this.sueldo * (PORCENTAJE_APORTE / 100)
+        let sueldo_neto = this.sueldo - contribucion
+        this.dinero = this.dinero + sueldo_neto
+    }
+}
+
+class Pasante extends Empleado {
+    fecha_inicio_pasantia: string;
+    fecha_fin_pasantia: string;
+    constructor(
+        id: number,
+        nombre: string,
+        edad: number,
+        dni: string,
+        sueldo: number,
+        puesto: string,
+        empresa: string,
+        horario_ingreso: string,
+        horario_egreso: string,
+        dias_semana_laboral: DiaSemana[],
+        fecha_inicio_pasantia: string,
+        fecha_fin_pasantia: string,
+    ) {
+        super(id, nombre, edad, dni, sueldo, puesto, empresa, horario_ingreso, horario_egreso, dias_semana_laboral);
+        this.fecha_inicio_pasantia = fecha_inicio_pasantia;
+        this.fecha_fin_pasantia = fecha_fin_pasantia;
+    }
+
+    hacerCosasDePasante(){
+        console.log('Ups, borre la base de datos!!')
+    }
+
+    cobrarSueldo(): void{
+        this.dinero = this.dinero + this.sueldo
+    }
+}
+
+
+
+const pasante3 = new Pasante(
+    9, 
+    "Lucia", 
+    21, 
+    '24889880', 
+    580000, 
+    "pasantia", 
+    "YPF", 
+    "09:00", 
+    "14:00", 
+    ['lunes', 'martes', 'viernes'], 
+    "01/03/2024", 
+    "30/08/2024"
+);
+
+/* 
+Usuario
+    presentar => se presenta
+
+Empleado
+    presentar => se presenta y cuenta la empresa y puesto que tiene
+    recibirAumento(aumento) => aumento bruto de su sueldo
+
+
+Pasante
+    presentar => se presenta y cuenta la empresa, puesto que tiene y desde cuando a cuando es su pasantia
 */
