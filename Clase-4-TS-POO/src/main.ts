@@ -49,15 +49,15 @@ console.log(persona_1)
 class ManejadorPersonas {
     personas: Persona[] = []
 
-    constructor (){
+    constructor() {
 
     }
 
-    agregarPersona(nombre: string, edad: number){
+    agregarPersona(nombre: string, edad: number) {
         const persona = new Persona(nombre, edad)
         this.personas.push(persona)
     }
-    eliminarPersonaPorId(persona_id: number){
+    eliminarPersonaPorId(persona_id: number) {
 
     }
 }
@@ -135,10 +135,10 @@ cpu.aumentarPrecio(5)
 cpu.vender(400)
 let resultado = cpu.vender(2)
 
-if(resultado === null){
+if (resultado === null) {
     console.log("Alerta de aumento de stock")
 }
-else{
+else {
     console.log("El importe final de tu compra es $" + resultado)
 }
 
@@ -152,7 +152,75 @@ ManejadorProductos
         productos => una lista interna de productos
     metodos:
         crearProducto(nombre, precio, stock_inicial, id) => Crea y agrega un producto al array
-        eliminarProductoPorId(producto_id) => busca y elmina el producto de la lista, si lo encuentra devuelve true, sino lo encuentra devuelve false
+        eliminarProductoPorId(producto_id) => busca y elimina el producto de la lista, si lo encuentra devuelve true, sino lo encuentra devuelve false
         calcularCapitalTotal => devuelve la suma de los precios por stock de todos los productos
         buscarProductoProximoAReponer => devuelve el producto con el stock mas bajo
 */
+
+//La clase encargada de manejar un listado de productos
+class ManejadorProductos {
+    productos: Producto[] = []
+
+    constructor() {
+
+    }
+
+    crearProducto(titulo: string, precio: number, stock_inicial: number): void {
+        //generamos el id del producto que estamos creando
+        const nuevo_id: number = Math.max(...this.productos.map(productoId => productoId.id)) + 1;
+
+        const producto = new Producto(titulo, precio, stock_inicial, nuevo_id);
+        this.productos.push(producto);
+    }
+
+    eliminarProductoPorId(id_a_buscar: number): boolean {
+        for (let index = 0; index < this.productos.length; index++) {
+            const id_actual = this.productos[index].id;
+            if (id_actual == id_a_buscar) {
+                this.productos.splice(index, 1);
+                return true;
+            }
+        }
+        return false
+    }
+
+    calcularCapitalTotal(): number {
+        let capitalTotal = 0;
+        for (const producto of this.productos) {
+            capitalTotal += producto.precio * producto.stock;
+        }
+        return capitalTotal;
+    }
+
+    buscarProductoProximoAReponer(): Producto | null {
+        if (this.productos.length === 0) {
+            return null
+        }
+        let productoConMenosStock = this.productos[0]
+        for (const producto of this.productos) {
+            if (producto.stock < productoConMenosStock.stock) {
+                productoConMenosStock = producto
+            }
+        }
+        return productoConMenosStock
+    }
+   /*  
+    //Opcion viable, devuelve el/los producto con stock minimo (contempla productos con mismo stock)
+    buscarProductoProximoAReponer(): Producto[] | null {
+        if (this.productos.length === 0) {
+            return null;
+        }
+        let productoMinimo: Producto[] = [this.productos[0]];
+        for (const producto of this.productos) {
+            if (producto.stock < productoMinimo[0].stock) {
+                productoMinimo = [producto];
+            }
+            else if (producto.stock === productoMinimo[0].stock) {
+                productoMinimo.push(producto);
+            }
+        }
+        return productoMinimo;
+    } */
+
+}
+
