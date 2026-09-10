@@ -296,7 +296,7 @@ type Nombre = string
 type Roles = "user" | 'admin' | 'staff'
 type Estado = 'accepted' | 'pending' | 'rejected' | 'open'
 
-let nombre : Nombre = 'pepe'
+let nombre: Nombre = 'pepe'
 
 class Usuario {
     id: number
@@ -309,6 +309,10 @@ class Usuario {
         this.nombre = nombre
         this.edad = edad
         this.dni = dni
+    }
+
+    presentarse(): void {
+        console.log(`Hola mi nombre es ${this.nombre} y tengo ${this.edad} años`)
     }
 }
 
@@ -340,11 +344,19 @@ class Empleado extends Usuario {
         this.dias_semana_laboral = dias_semana_laboral
     }
 
-    cobrarSueldo (): void{
+    cobrarSueldo(): void {
         const PORCENTAJE_APORTE = 10
         let contribucion = this.sueldo * (PORCENTAJE_APORTE / 100)
         let sueldo_neto = this.sueldo - contribucion
         this.dinero = this.dinero + sueldo_neto
+    }
+
+    presentarse(): void {
+        console.log(`Hola, mi nombre es ${this.nombre} y tengo ${this.edad}. Trabajo en la ${this.empresa} y soy ${this.puesto}. Mi sueldo es de ${this.sueldo}`)
+    }
+
+    recibirAumento(procentaje_aumento: number): void {
+        this.sueldo = this.sueldo * ((procentaje_aumento / 100) + 1);
     }
 }
 
@@ -370,41 +382,72 @@ class Pasante extends Empleado {
         this.fecha_fin_pasantia = fecha_fin_pasantia;
     }
 
-    hacerCosasDePasante(){
+    hacerCosasDePasante() {
         console.log('Ups, borre la base de datos!!')
     }
 
-    cobrarSueldo(): void{
+    cobrarSueldo(): void {
         this.dinero = this.dinero + this.sueldo
+    }
+
+    presentarse(): void {
+        console.log(
+            `Hola soy ${this.nombre} trabajo como ${this.puesto} en ${this.empresa} y mi pasantía va desde el ${this.fecha_inicio_pasantia} hasta el ${this.fecha_fin_pasantia}`
+        )
     }
 }
 
 
+const usuario_1 = new Usuario(
+    1, 
+    'pepe', 
+    40, 
+    '11222333'
+)
+
+const empleado_1 = new Empleado(
+    2, 
+    'maria', 
+    26, 
+    '11222334', 
+    2000000, 
+    'Inspectora de billeteras', 
+    'test srl', 
+    '13:00', 
+    '18:00', 
+    ['viernes']
+)
 
 const pasante3 = new Pasante(
-    9, 
-    "Lucia", 
-    21, 
-    '24889880', 
-    580000, 
-    "pasantia", 
-    "YPF", 
-    "09:00", 
-    "14:00", 
-    ['lunes', 'martes', 'viernes'], 
-    "01/03/2024", 
+    9,
+    "Lucia",
+    21,
+    '24889880',
+    580000,
+    "gestor de algo pasante",
+    "YPF",
+    "09:00",
+    "14:00",
+    ['lunes', 'martes', 'viernes'],
+    "01/03/2024",
     "30/08/2024"
 );
 
+usuario_1.presentarse()
+
+empleado_1.recibirAumento(10)
+empleado_1.presentarse()
+pasante3.presentarse()
+
 /* 
 Usuario
-    presentar => se presenta
+    presentar => se presenta Rocio
 
 Empleado
-    presentar => se presenta y cuenta la empresa y puesto que tiene
-    recibirAumento(aumento) => aumento bruto de su sueldo
-
+    presentar => se presenta y cuenta la empresa y puesto que tiene Alessandro
+    recibirAumento(aumento) => aumento bruto de su sueldo Federico
 
 Pasante
-    presentar => se presenta y cuenta la empresa, puesto que tiene y desde cuando a cuando es su pasantia
+    presentar => se presenta y cuenta la empresa, puesto que tiene y desde cuando a cuando es su pasantia Gonzalo
 */
+
