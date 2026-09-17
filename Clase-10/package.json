@@ -13,6 +13,7 @@
   "type": "module",
   "description": "Proyecto de prueba para conectarnos a mongoDB desde node.js",
   "dependencies": {
+    "dotenv": "^17.4.2",
     "mongoose": "^9.10.1",
     "uuid": "^14.0.2"
   }

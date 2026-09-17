@@ -1,14 +1,10 @@
 import mongoose from "mongoose";
-
-
-
-const MONGO_URI = 'mongodb://localhost:27017'
-const MONGO_DB_NAME = '2026_UTN_PWA_SEP_MAR_JUE_SLACK'
+import ENVIRONMENT from "./environment.config.js";
 
 async function connectMongoDB () {
     try{
         await mongoose.connect(
-            `${MONGO_URI}/${MONGO_DB_NAME}`
+            `${ENVIRONMENT.MONGO_DB_URI}/${ENVIRONMENT.MONGO_DB_NAME}`
         )
         console.log('Conexion a MongoDB exitosa!')
     }
@@ -21,3 +17,6 @@ async function connectMongoDB () {
 }
 
 export default connectMongoDB
+
+
+
