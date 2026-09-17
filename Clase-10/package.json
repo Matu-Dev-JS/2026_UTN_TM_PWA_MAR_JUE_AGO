@@ -10,6 +10,9 @@
   "keywords": [],
   "author": "matu.dev",
   "license": "ISC",
-  "type": "commonjs",
-  "description": "Proyecto de prueba para conectarnos a mongoDB desde node.js"
+  "type": "module",
+  "description": "Proyecto de prueba para conectarnos a mongoDB desde node.js",
+  "dependencies": {
+    "uuid": "^14.0.2"
+  }
 }

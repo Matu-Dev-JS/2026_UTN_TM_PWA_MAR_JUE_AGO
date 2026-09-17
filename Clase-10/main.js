@@ -1,4 +1,6 @@
 
-console.log('hola mundo')
-console.log('Que tal?')
-console.log(1 + 2)
+import {v4 as uuid} from 'uuid'
+
+
+let id_random = uuid()
+console.log(id_random)
