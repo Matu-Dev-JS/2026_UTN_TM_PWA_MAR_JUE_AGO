@@ -61,7 +61,7 @@ async function getUsersBySearchTerm(term){
     const result = await User.find({
         nombre: {
             $regex: term,
-            $options: 'i'
+            $options: 'i' //Permite buscar de forma 'no case sensitive' (Sin diferenciar entre mayus y minus)
         }, 
         activo: true
     })
