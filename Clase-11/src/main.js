@@ -65,6 +65,7 @@ async function getUsersBySearchTerm(term){
         }, 
         activo: true
     })
+    .limit(5)
 
     console.log(result)
 }
@@ -75,7 +76,7 @@ createUser('juan', 'juan@gmail.com', 'juan123') */
 //getUsersByCreationDate('2026-9-12', '2026-9-20')
 
 //getUsersByName('pepe')
-getUsersBySearchTerm('pepe')
+/* getUsersBySearchTerm('pepe') */
 
 
 /* 
