@@ -5,12 +5,13 @@ import connectMongoDB from "./config/mongo.config.js";
 import User from "./models/user.model.js";
 import Workspace from "./models/workspace.model.js";
 
+connectMongoDB()
 
 
 
 
-function createUser() {
-    User.create({ nombre: 'maria', email: 'maria@mail.com', password: 'pepe123' })
+function createUser(nombre, email, password) {
+    User.create({ nombre: nombre, email: email, password: password })
 }
 
 //createUser()
@@ -30,42 +31,54 @@ function createWorkspace(name, description) {
 /* createWorkspace('Contabilidad Argentina SA', 'Comunicaciones internas de la empresa') */
 
 
-
-/* 
-
-JS es un lenguaje programacion
-En JS existen 2 tipos de funciones: Sincronica / Asincronica
-Las diferenciamos porque en su declaracion llevan el async o no
-*/
-/* 
-En JS las promises (promesas) se inventaron para poder manejar procesos asincronicos
-Basicamente son un objeto con un estado interno
-Ese estado puede ser:
-    - pending: El proceso esta ocurriendo aun 
-    - resolved: El proceso finalizo exitosamente
-    - rejected: El proceso se interrumpio y finalizo
-*/
-
-
-async function getUsers() {
-    try {
-        console.log("Obteniendo usuarios")
-        //mediante fetch podemos emitir consultas HTTP
-        const result = await fetch(
-            'https://jsonplaceholder.typicode.com/users',
-            {
-                method: 'GET'
-            }
-        )
-        //Transformamos el contenido de la respuesta en JSON
-        const content = await result.json()
-        console.log("El contenido del fetch es:", content[0].name)
-    }
-    catch (error) {
-        console.log("Hubo un error:", error)
-    }
+async function getUsers(){
+    const result = await User.find()
+    console.log(result)
+    return result
 }
 
-getUsers()
-console.log('Operacion importante')
-connectMongoDB()
+async function getUsersByCreationDate(min_date, max_date){
+    const result = await User.find({
+        fecha_creacion: {
+            $gte: new Date(min_date), //Establece una fecha minima
+            $lt: new Date(max_date) //Establece una fecha maxima
+        }
+    })
+    console.log(result)
+    return result
+}
+
+async function getUsersByName(name){
+    const result = await User.find({
+        nombre: name, 
+        activo: true
+    })
+
+    console.log(result)
+}
+
+async function getUsersBySearchTerm(term){
+    const result = await User.find({
+        nombre: {
+            $regex: term,
+            $options: 'i'
+        }, 
+        activo: true
+    })
+
+    console.log(result)
+}
+
+
+/* 
+createUser('juan', 'juan@gmail.com', 'juan123') */
+//getUsersByCreationDate('2026-9-12', '2026-9-20')
+
+//getUsersByName('pepe')
+getUsersBySearchTerm('pepe')
+
+
+/* 
+Reglas para que tu servidor no se sature:
+    - Siempre que podamos, usar filtros del lado de la DB (Son MUUUCHO mas optimos que usar un for of)
+*/
