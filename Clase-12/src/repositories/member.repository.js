@@ -36,8 +36,11 @@ class MemberRepository {
     }
 
     //Traer todos miembros de un espacio de trabajo
-    async getAllMembershipsByWorkspaceid(workspace_id){
-
+    async getAllMembershipsByWorkspaceId(workspace_id){
+        const result = await Member
+        .find({fk_id_espacio_trabajo: workspace_id})
+        .populate('fk_id_usuario', 'nombre email')
+        console.log(result)
     }
 }
 const member_repository = new MemberRepository()

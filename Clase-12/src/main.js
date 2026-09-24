@@ -17,5 +17,6 @@ connectMongoDB()
 
 //member_repository.create('6aabfd4d5f848b9d98808f0f', '6ab528581000368924e5d41f', 'owner')
 
-member_repository.getAllWorkspaceByUserId('6aabfd4d5f848b9d98808f0f')
+//member_repository.getAllWorkspaceByUserId('6aabfd4d5f848b9d98808f0f')
 
+//member_repository.getAllMembershipsByWorkspaceId('6ab2729b3784a8b4ecb9936e')
