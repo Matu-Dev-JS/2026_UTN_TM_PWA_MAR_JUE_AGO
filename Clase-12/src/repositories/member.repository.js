@@ -1,21 +1,21 @@
 import Member from "../models/member.model.js"
 
 class MemberRepository {
-    async create(fk_id_usuario, fk_id_espacio_trabajo, rol) {
+    async create(userId, workspaceId, role) {
         await Member.create({
-            fk_id_usuario: fk_id_usuario,
-            fk_id_espacio_trabajo: fk_id_espacio_trabajo,
-            rol: rol
+            fk_id_usuario: userId,
+            fk_id_espacio_trabajo: workspaceId,
+            rol: role
         })
     }
 
-    async deleteById(member_id) {
-        const result = await Member.findByIdAndDelete(member_id)
+    async deleteById(memberId) {
+        const result = await Member.findByIdAndDelete(memberId)
         console.log(result)
     }
 
-    async updateRoleById(member_id, rol) {
-        const result = await Member.findByIdAndUpdate(member_id, { rol: rol })
+    async updateRoleById(memberId, role) {
+        const result = await Member.findByIdAndUpdate(memberId, { rol: role })
         console.log(result)
     }
 }
