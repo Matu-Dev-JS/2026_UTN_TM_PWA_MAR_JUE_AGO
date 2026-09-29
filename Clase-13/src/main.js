@@ -25,13 +25,12 @@ const app = express()
 //GET /api/users
 //Devolver un JSON / HTML con el listadito de usuarios
 app.get(
-    '/api/users', 
+    '/api/users',
     async (request, response) => {
 
-        try{
+        try {
             //traemos de DB la lista completa de usuarios
             const user_list = await user_repository.get()
-            console.log(homero)
             response.send({
                 message: "Get users list", //Mensaje descriptivo de la operacion
                 ok: true, //Flag que indica si se resolvio correctamente o no la operacion a grandes rasgos
@@ -42,7 +41,7 @@ app.get(
             })
 
         }
-        catch(error){
+        catch (error) {
             response.send(
                 {
                     message: 'Internal server error',
@@ -53,6 +52,58 @@ app.get(
         }
     }
 )
+
+
+//Traer la info de un cierto usuario por ID
+//GET /api/users/:user_id
+//user_id es un parametro de URL, basicamente es un valor que va a variar y nosotros podemos acceder a el
+//Un GET a /api/users/1 o /api/users/2 van apuntar al mismo controlador
+
+app.get(
+    '/api/users/:user_id',
+    async (request, response) => {
+        try {
+
+            console.log(request.params)
+
+            //Accedemos a los parametros de URL
+            const user_id = request.params.user_id
+            const user = await user_repository.getById(user_id)
+
+            //Si no existe el usuario devolver error 404
+            if(!user){
+                //Ponemos return para cortar la ejecucion de la funcion
+                return response.send(
+                    {
+                        message: "User not found",
+                        status: 404,
+                        ok: false
+                    }
+                )
+            }
+            return response.send(
+                {
+                    message: "Get user details successfully",
+                    status: 200,
+                    ok: true,
+                    data: {
+                        user: user
+                    }
+                }
+            )
+        }
+        catch (error) {
+            return response.send(
+                {
+                    message: 'Internal server error',
+                    ok: false,
+                    status: 500
+                }
+            )
+        }
+    }
+)
+
 
 
 

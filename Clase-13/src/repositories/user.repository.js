@@ -51,7 +51,7 @@ class UserRepository {
     async getById (user_id){
         const result = await User.findById(user_id)
     
-        console.log(result)
+        return result
     }
 
     async softDeleteById(user_id){
