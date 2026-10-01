@@ -9,6 +9,9 @@ connectMongoDB()
 
 import express from 'express'
 import ServerError from "./utils/error.util.js";
+import errorHandlerMiddleware from "./middlewares/error.middleware.js";
+import { getUserById, getUsers } from "./controllers/user.controller.js";
+import { register } from "./controllers/auth.controller.js";
 
 const PORT = 8080
 
@@ -20,165 +23,49 @@ const app = express()
 app.use(express.json())
 
 
-
-
 app.get(
     '/api/users',
-    async (request, response) => {
-
-        try {
-            const user_list = await user_repository.get()
-            response.send({
-                message: "Get users list", 
-                ok: true,
-                status: 200,
-                data: {
-                    users: user_list
-                }
-            })
-
-        }
-        catch (error) {
-            response.send(
-                {
-                    message: 'Internal server error',
-                    ok: false,
-                    status: 500
-                }
-            )
-        }
-    }
+    getUsers
 )
 
 
 app.get(
     '/api/users/:user_id',
-    async (request, response) => {
-        try {
-
-            console.log(request.params)
-
-            const user_id = request.params.user_id
-            const user = await user_repository.getById(user_id)
-
-            if(!user){
-                return response.send(
-                    {
-                        message: "User not found",
-                        status: 404,
-                        ok: false
-                    }
-                )
-            }
-            return response.send(
-                {
-                    message: "Get user details successfully",
-                    status: 200,
-                    ok: true,
-                    data: {
-                        user: user
-                    }
-                }
-            )
-        }
-        catch (error) {
-            return response.send(
-                {
-                    message: 'Internal server error',
-                    ok: false,
-                    status: 500
-                }
-            )
-        }
-    }
+    getUserById
 )
 
 
+app.post(
+    '/api/auth/register',
+    register
+)
 
+/* 
+Flujo actual:
+LLega request => pasa por el middleware de express.json (hace el checkeo de si el body es JSON) => llega al endpoint (Ahi mismo se maneja el error)
+
+Flujo ideal:
+LLega request 
+=> 
+pasa por el middleware de express.json (hace el checkeo de si el body es JSON) 
+=> 
+llega al endpoint 
+=> (si hay error)
+Middleware de errores (checkea si el error es controlable o no y responde)
+*/
 
 app.get(
     '/api/status',
     (request, response) => {
-        response.send(['hola, les traigo pAZ'])
+
+        response.send(['hola, les traigo paz'])
     }
 )
 
 
-/* 
-Para enviar en una request HTTP info a una API usamos el body
-
-Las consultas (request) tipo GET NO TIENEN body
-El body puede ser de distintos tipos de dato:
-    Hoy vamos a usar JSON, para poder usar JSON nuestra API debe estar preparada para recibir ese tipo de informacion
-*/
-
-app.post(
-    '/api/auth/register',
-    async (request, response) => {
-        try{
-            console.log("[REGISTER]", request.body)
-    
-            const {username, email, password} = request.body
-    
-            if(!username || !email || !password){
-                throw new ServerError(
-                    "Email, password and username is required", 
-                    400
-                )
-            }
-    
-            if( !(/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) ){
-                throw new ServerError(
-                    "Email is incorrect",
-                    400
-                )
-            }
-    
-            //Validar si el mail ya esta registrado
-            const user_already_exist = await user_repository.getByEmail(email)
-            if(user_already_exist){
-                throw new ServerError(
-                    'Email is already used',
-                    400
-                )
-            }
-
-            await user_repository.create(username, email, password)
-    
-            return response.send({
-                ok: true,
-                status: 201,
-                message: "User registered successfully"
-            })
-
-        }
-        catch(error){
-            //Si hay estatus es un error manejable, porque yo defini ese error
-            if(error.status){
-                return response.send(
-                    {
-                        ok: false,
-                        status: error.status,
-                        message: error.message
-                    }
-                )
-            }
-            //Es un error inesperado
-            else{
-                console.error('[Server Error]:', error.message)
-                //Error generico
-                return response.send(
-                    {
-                        ok: false,
-                        status: 500,
-                        message: 'Internal server error'
-                    }
-                )
-            }
-        }
-    }
+app.use(
+    errorHandlerMiddleware
 )
-
 
 
 app.listen(

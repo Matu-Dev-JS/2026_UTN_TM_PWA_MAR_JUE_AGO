@@ -22,7 +22,6 @@ class UserRepository {
                 $lt: new Date(max_date) //Establece una fecha maxima
             }
         })
-        console.log(result)
         return result
     }
 
@@ -32,7 +31,7 @@ class UserRepository {
             activo: true
         })
 
-        console.log(result)
+        return result
     }
 
     async getBySearchTerm(term){
@@ -45,7 +44,7 @@ class UserRepository {
         })
         .limit(5)
 
-        console.log(result)
+        return user
     }
 
     async getById (user_id){
