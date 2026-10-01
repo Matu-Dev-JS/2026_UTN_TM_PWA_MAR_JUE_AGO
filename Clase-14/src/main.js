@@ -8,6 +8,7 @@ connectMongoDB()
 
 
 import express from 'express'
+import ServerError from "./utils/error.util.js";
 
 const PORT = 8080
 
@@ -114,50 +115,67 @@ El body puede ser de distintos tipos de dato:
 app.post(
     '/api/auth/register',
     async (request, response) => {
-        console.log("[REGISTER]", request.body)
+        try{
+            console.log("[REGISTER]", request.body)
+    
+            const {username, email, password} = request.body
+    
+            if(!username || !email || !password){
+                throw new ServerError(
+                    "Email, password and username is required", 
+                    400
+                )
+            }
+    
+            if( !(/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) ){
+                throw new ServerError(
+                    "Email is incorrect",
+                    400
+                )
+            }
+    
+            //Validar si el mail ya esta registrado
+            const user_already_exist = await user_repository.getByEmail(email)
+            if(user_already_exist){
+                throw new ServerError(
+                    'Email is already used',
+                    400
+                )
+            }
 
-        const {username, email, password} = request.body
+            await user_repository.create(username, email, password)
+    
+            return response.send({
+                ok: true,
+                status: 201,
+                message: "User registered successfully"
+            })
 
-        if(!username || !email || !password){
-            return response.send(
-                {
-                    ok: false,
-                    status: 400,
-                    message: "Email, password and username is required"
-                }
-            )
         }
-
-        if( !(/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) ){
-            return response.send(
-                {
-                    ok: false,
-                    status: 400,
-                    message: "Email is incorrect"
-                }
-            )
+        catch(error){
+            //Si hay estatus es un error manejable, porque yo defini ese error
+            if(error.status){
+                return response.send(
+                    {
+                        ok: false,
+                        status: error.status,
+                        message: error.message
+                    }
+                )
+            }
+            //Es un error inesperado
+            else{
+                console.error('[Server Error]:', error.message)
+                //Error generico
+                return response.send(
+                    {
+                        ok: false,
+                        status: 500,
+                        message: 'Internal server error'
+                    }
+                )
+            }
         }
-
-        //Validar si el mail ya esta registrado
-        const user_already_exist = await user_repository.getByEmail(email)
-        if(user_already_exist){
-            return response.send(
-                {
-                    status: 400,
-                    ok: false,
-                    message: 'Email is already used'
-                }
-            )
-        }
-
-
-        await user_repository.create(username, email, password)
-
-        return response.send({
-            ok: true,
-            status: 201,
-            message: "User registered successfully"
-        })
     }
 )
 
