@@ -1,6 +1,7 @@
 import user_repository from "../repositories/user.repository.js"
+import { generateHash } from "../utils/bcrypt.util.js"
 import ServerError from "../utils/error.util.js"
-
+import bcrypt from 'bcrypt'
 
 
 /* 
@@ -39,7 +40,13 @@ export async function register(request, response) {
         )
     }
 
-    await user_repository.create(username, email, password)
+    /* 
+    Encriptamos la password para que en DB se guarde un dato irreversible 
+    Viendo el dato irreversible es IMPROBABLE que se sepa el dato original
+    */
+    const password_hash = await generateHash(password)
+
+    await user_repository.create(username, email, password_hash)
 
     return response.send({
         ok: true,
