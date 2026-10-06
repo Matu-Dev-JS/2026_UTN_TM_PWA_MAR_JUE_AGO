@@ -7,7 +7,7 @@ function errorHandlerMiddleware(error, request, response, next) {
 
     //Error esperable del sistema
     if (error.status) {
-        return response.send(
+        return response.status(error.status).send(
             {
                 ok: false,
                 status: error.status,
@@ -19,7 +19,7 @@ function errorHandlerMiddleware(error, request, response, next) {
     else {
         console.log('[Middleware de Error]:', error)
         //Error generico
-        return response.send(
+        return response.status(500).send(
             {
                 ok: false,
                 status: 500,

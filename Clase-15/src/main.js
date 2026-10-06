@@ -11,7 +11,7 @@ import express from 'express'
 import ServerError from "./utils/error.util.js";
 import errorHandlerMiddleware from "./middlewares/error.middleware.js";
 import { getUserById, getUsers } from "./controllers/user.controller.js";
-import { register } from "./controllers/auth.controller.js";
+import { login, register } from "./controllers/auth.controller.js";
 import channel_repository from "./repositories/channel.repository.js";
 import { compareHash } from "./utils/bcrypt.util.js";
 
@@ -42,6 +42,11 @@ app.post(
     register
 )
 
+app.post(
+    '/api/auth/login',
+    login
+)
+
 /* 
 Flujo actual:
 LLega request => pasa por el middleware de express.json (hace el checkeo de si el body es JSON) => llega al endpoint (Ahi mismo se maneja el error)
@@ -60,7 +65,7 @@ app.get(
     '/api/status',
     (request, response) => {
 
-        response.send(['hola, les traigo paz'])
+        response.status(200).send(['hola, les traigo paz'])
     }
 )
 
