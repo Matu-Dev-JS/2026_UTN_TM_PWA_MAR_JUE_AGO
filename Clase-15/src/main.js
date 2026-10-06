@@ -13,6 +13,7 @@ import errorHandlerMiddleware from "./middlewares/error.middleware.js";
 import { getUserById, getUsers } from "./controllers/user.controller.js";
 import { register } from "./controllers/auth.controller.js";
 import channel_repository from "./repositories/channel.repository.js";
+import { compareHash } from "./utils/bcrypt.util.js";
 
 const PORT = 8080
 
@@ -84,3 +85,8 @@ app.listen(
 //channel_repository.updateById('6ac4e7e81db40fa320a4a045', 'General oficial', 'test')
 //channel_repository.getAllChannelsByWorkpaceId("6ab2729b3784a8b4ecb9936e")
 //channel_repository.deleteById('6ac4e7e81db40fa320a4a045')
+
+//Simil de: password === saved_password
+/* compareHash(
+    "Pepito1234", "$2b$12$u54NKB5k7HFm6d6TfageieMxJiR9XH0FyeYNH4VaRr37Cb.Mztwi."
+) */

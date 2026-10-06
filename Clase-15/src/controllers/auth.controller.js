@@ -54,3 +54,16 @@ export async function register(request, response) {
         message: "User registered successfully"
     })
 }
+
+/* 
+Crear la funcion login(request, response)
+Esta funcion debe primero verificar que por body llegue un email y una password
+Debe verificar que el email tenga formato de email
+Debe buscar por email al usuario y verificar que este exista (Sino decir 404 Usuario no encontrado)
+Comparar el hash guardado en DB contra la contraseña que nos envio por body el cliente 
+    - SI es incorrecto decir (400 Credenciales incorrectas)
+    - Si es correcto decir (200 Usuario autentificado exitosamente)
+
+Este controlador debe estar en el endpoint
+POST /api/auth/login
+*/
