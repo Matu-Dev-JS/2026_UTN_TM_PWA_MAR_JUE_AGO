@@ -2,10 +2,8 @@ import connectMongoDB from "./config/mongo.config.js";
 
 connectMongoDB()
 
-
 import express from 'express'
 import errorHandlerMiddleware from "./middlewares/error.middleware.js";
-import { compareHash } from "./utils/bcrypt.util.js";
 import auth_router from "./routes/auth.router.js";
 import user_router from "./routes/user.router.js";
 
