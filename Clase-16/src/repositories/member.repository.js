@@ -2,7 +2,7 @@ import Member from "../models/member.model.js"
 
 class MemberRepository {
     async create(userId, workspaceId, role) {
-        await Member.create({
+        return await Member.create({
             fk_id_usuario: userId,
             fk_id_espacio_trabajo: workspaceId,
             rol: role

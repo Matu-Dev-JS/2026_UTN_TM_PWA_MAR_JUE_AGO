@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken'
 import ENVIRONMENT from '../config/environment.config.js'
-import ServerError from '../utils/error.util'
+import ServerError from '../utils/error.util.js'
 
 function authMiddleware (request, response, next){
     try{
@@ -75,3 +75,5 @@ function authMiddleware (request, response, next){
         )
     }
 }
+
+export default authMiddleware

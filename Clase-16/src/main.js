@@ -6,6 +6,10 @@ import express from 'express'
 import errorHandlerMiddleware from "./middlewares/error.middleware.js";
 import auth_router from "./routes/auth.router.js";
 import user_router from "./routes/user.router.js";
+import authMiddleware from "./middlewares/auth.middleware.js";
+import workspace_repository from "./repositories/workspace.repository.js";
+import member_repository from "./repositories/member.repository.js";
+import workspace_router from "./routes/workspace.router.js";
 
 const PORT = 8080
 
@@ -20,14 +24,10 @@ Todas las consultas que lleguen a /api/auth las manejara el auth_router
 */
 app.use('/api/auth', auth_router)
 app.use('/api/users', user_router)
+app.use('/api/workspaces', workspace_router)
 
 
-app.post(
-    '/api/workspaces', 
-    async (request, response) => {
-        //Quien carancho quiere hacer esta operacion ?????
-    }
-)
+
 
 app.use(
     errorHandlerMiddleware
