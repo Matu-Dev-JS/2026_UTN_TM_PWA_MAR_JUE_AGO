@@ -58,9 +58,6 @@ export async function register(request, response) {
 }
 
 
-
-
-
 /* 
 Cuando un usuario inicia sesion debemos darle una credencial firmada que nos permita indicar quien es ese usuario para que mas adelante el usuario nos devuelva dicha credencial y poder confiar en ella
 
@@ -110,10 +107,23 @@ export async function login(request, response) {
 
     /* Crear un token firmado de sesion */
 
+    const auth_token = jwt.sign(
+        {
+            //Aca va a info que queres guardar en la credencial
+            id: user._id,
+            name: user.nombre,
+            email: user.email
+        },
+        ENVIRONMENT.JWT_SECRET_KEY //Firmamos con esto
+    )
+
 
     return response.status(200).send({
         ok: true,
         message: "You have logged in successfully",
-        status: 200
+        status: 200,
+        data: {
+            auth_token
+        }
     });
 }
