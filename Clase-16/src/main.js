@@ -22,6 +22,13 @@ app.use('/api/auth', auth_router)
 app.use('/api/users', user_router)
 
 
+app.post(
+    '/api/workspaces', 
+    async (request, response) => {
+        //Quien carancho quiere hacer esta operacion ?????
+    }
+)
+
 app.use(
     errorHandlerMiddleware
 )
