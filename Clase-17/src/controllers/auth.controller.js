@@ -71,7 +71,9 @@ export async function register(request, response) {
                 <body>
                     <h1>Bienvenido a nuestra plataforma</h1>
                     <p>Necesitamos verificar este correo electronico</p>
-                    <a href='${ENVIRONMENT.URL_BACKEND}/api/auth/verify-email/${verify_email_token}'>Click aqui para verifcar tu cuenta</a>
+                    <a href='${ENVIRONMENT.URL_BACKEND}/api/auth/verify-email/${verify_email_token}'>
+                    Click aqui para verifcar tu cuenta
+                    </a>
                 </body>
             `
         }
@@ -153,4 +155,42 @@ export async function login(request, response) {
             auth_token
         }
     });
+}
+
+
+export async function verifyEmail (request, response){
+    const {verify_email_token} = request.params
+    //Verificar el token
+    const {email} = jwt.verify(
+        verify_email_token,
+        ENVIRONMENT.JWT_SECRET_KEY
+    )
+
+    const user_found = await user_repository.getByEmail(email)
+
+    //Si no existe el usuario error
+    if(!user_found){
+        throw new ServerError('Usuario no encontrado', 404)
+    }
+
+    //Si ya estas verificado deja de intentar verificarte
+    if(user_found.email_verificado){
+        throw new ServerError('Ya estas verificado', 400)
+    }
+
+    //Actualizamos al usuario para verificarlo
+    await user_repository.updateById(
+        user_found._id, 
+        {
+            email_verificado: true
+        }
+    )
+
+    return response.status(200).send(
+        {
+            ok: true, 
+            status: 200,
+            message: 'Usuario verificado exitosamente'
+        }
+    )
 }

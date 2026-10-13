@@ -69,6 +69,13 @@ class UserRepository {
         const result = await User.findOne({email: email})
         return result
     } 
+
+    async updateById (user_id, update_data) {
+        return await User.findByIdAndUpdate(
+            user_id,
+            update_data
+        )
+    }
     
 }
 
