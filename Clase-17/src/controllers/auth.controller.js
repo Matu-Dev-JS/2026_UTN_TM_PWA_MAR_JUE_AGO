@@ -1,4 +1,5 @@
 import ENVIRONMENT from "../config/environment.config.js"
+import mailer_transporter from "../config/mailer.config.js"
 import user_repository from "../repositories/user.repository.js"
 import { compareHash, generateHash } from "../utils/bcrypt.util.js"
 import ServerError from "../utils/error.util.js"
@@ -49,6 +50,21 @@ export async function register(request, response) {
     const password_hash = await generateHash(password)
 
     await user_repository.create(username, email, password_hash)
+
+    await mailer_transporter.sendMail(
+        {
+            to: email,
+            from: ENVIRONMENT.GMAIL_USER,
+            subject: "Verifica tu cuenta",
+            html: `
+                <body>
+                    <h1>Bienvenido a nuestra plataforma</h1>
+                    <p>Necesitamos verificar este correo electronico</p>
+                    <a>Click aqui para verifcar tu cuenta</a>
+                </body>
+            `
+        }
+    )
 
     return response.status(201).send({
         ok: true,
