@@ -51,6 +51,17 @@ export async function register(request, response) {
 
     await user_repository.create(username, email, password_hash)
 
+
+    const verify_email_token = jwt.sign(
+        {
+            email: email
+        },
+        ENVIRONMENT.JWT_SECRET_KEY,
+        {
+            expiresIn: '7d' // -> expira en 7 dias
+        }
+    )
+
     await mailer_transporter.sendMail(
         {
             to: email,
@@ -60,7 +71,7 @@ export async function register(request, response) {
                 <body>
                     <h1>Bienvenido a nuestra plataforma</h1>
                     <p>Necesitamos verificar este correo electronico</p>
-                    <a>Click aqui para verifcar tu cuenta</a>
+                    <a href='${ENVIRONMENT.URL_BACKEND}/api/auth/verify-email/${verify_email_token}'>Click aqui para verifcar tu cuenta</a>
                 </body>
             `
         }
