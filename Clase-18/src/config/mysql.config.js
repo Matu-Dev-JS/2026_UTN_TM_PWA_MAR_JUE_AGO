@@ -2,7 +2,7 @@ import mysql from 'mysql2/promise' //Nos traemos a promise para trabajar con asy
 import ENVIRONMENT from './environment.config.js'
 
 
-const pool = mysql.createPool({
+export const pool = mysql.createPool({
     host: ENVIRONMENT.MYSQL_DB_HOST,
     user: ENVIRONMENT.MYSQL_DB_USER,
     password: ENVIRONMENT.MYSQL_DB_PASSWORD,

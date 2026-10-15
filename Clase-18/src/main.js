@@ -14,6 +14,7 @@ import member_repository from "./repositories/member.repository.js";
 import workspace_router from "./routes/workspace.router.js";
 import mailer_transporter from "./config/mailer.config.js";
 import ENVIRONMENT from "./config/environment.config.js";
+import user_repository from "./repositories/user.repository.js";
 
 
 
@@ -63,3 +64,8 @@ app.listen(
     }
 ) */
 
+/* user_repository.create('test-1', 'test-1@gmail.com', 'test123') */
+
+//user_repository.get()
+
+user_repository.getById(3)
