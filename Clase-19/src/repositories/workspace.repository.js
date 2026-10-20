@@ -6,6 +6,10 @@ class WorkspaceRepository {
         return workspace_created
     }
 
+    async getById(workspace_id) {
+        return await Workspace.findById(workspace_id)
+    }
+
 }
 const workspace_repository = new WorkspaceRepository()
 export default workspace_repository

@@ -8,20 +8,20 @@ import User from "../models/user.model.js"
 
 class UserRepository {
 
-  /*   async create(nombre, email, password) {
+    async create(nombre, email, password) {
         await User.create({ nombre: nombre, email: email, password: password })
-    } */
+    }
 
     /* 
     INSERT INTO usuarios (nombre, email, password) VALUES ('pepe', 'pepe@gmail.com', 'pepe123')
     */
     //Version SQL
-    async create (nombre, email, password){
+    /* async create (nombre, email, password){
         let query_sql = `INSERT INTO usuarios (nombre, email, password) VALUES (?, ?, ?)`
-        /* 
-        - pool.execute sanitiza los valores a inyectar en la query 
-        - devuelve un array con [resultado, tablas]
-        */
+        
+        //- pool.execute sanitiza los valores a inyectar en la query 
+        //- devuelve un array con [resultado, tablas]
+       
         const [result] = await pool.execute(
             query_sql,
             [
@@ -33,9 +33,9 @@ class UserRepository {
         console.log('[UserRepository.create]:', result)
         return result.insertId
         
-    }
+    } */
 
-    async get(){
+   /*  async get(){
         const [result] = await pool.execute(`SELECT * FROM usuarios`)
         console.log('[UserRepository.get]:', result)
         const result_formatted = result.map(
@@ -51,15 +51,15 @@ class UserRepository {
             }
         )
         return result_formatted
-    }
+    } */
 
  
     //MONGO DB
-   /*  async get() {
+    async get() {
         const result = await User.find()
         return result
     }
- */
+
     async getByCreationDate(min_date, max_date){
         const result = await User.find({
             fecha_creacion: {
@@ -92,17 +92,17 @@ class UserRepository {
         return user
     }
 
-   /*  
+    
     //MongoDB
    async getById (user_id){
         const result = await User.findById(user_id)
     
         return result
-    } */
+    }
 
     //MYSQL
 
-    async getById(user_id){
+    /* async getById(user_id){
         const [result] = await pool.execute(
             'SELECT * FROM usuarios WHERE id = ?',
             [user_id]
@@ -124,7 +124,7 @@ class UserRepository {
         else{
             return null
         }
-    }
+    } */
 
     async softDeleteById(user_id){
         const result = await User.findByIdAndUpdate(user_id, {activo: false})

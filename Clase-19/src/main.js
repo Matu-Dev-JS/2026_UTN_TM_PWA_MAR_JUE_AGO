@@ -2,7 +2,7 @@ import connectMongoDB from "./config/mongo.config.js";
 import { testMysqlConnection } from "./config/mysql.config.js";
 
 connectMongoDB()
-testMysqlConnection()
+/* testMysqlConnection() */
 
 import express from 'express'
 import errorHandlerMiddleware from "./middlewares/error.middleware.js";
@@ -68,4 +68,4 @@ app.listen(
 
 //user_repository.get()
 
-user_repository.getById(3)
+/* user_repository.getById(3) */

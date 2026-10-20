@@ -2,6 +2,9 @@ import express from 'express'
 import workspace_repository from '../repositories/workspace.repository.js'
 import member_repository from '../repositories/member.repository.js'
 import authMiddleware from '../middlewares/auth.middleware.js'
+import channel_router from './channels.router.js'
+import ServerError from '../utils/error.util.js'
+import workspaceMiddleware from '../middlewares/workspace.middleware.js'
 
 const workspace_router = express.Router()
 
@@ -45,4 +48,33 @@ workspace_router.post(
     }
 )
 
+workspace_router.get(
+    '/:workspace_id', 
+    authMiddleware,
+    workspaceMiddleware,
+    async (request, response) => {
+        
+
+        return response.status(200).send({
+            ok: true,
+            message: "Workspace obtenido correctamente",
+            status: 200,
+            data: {
+                workspace_selected: request.workspace
+            }
+        })
+    }
+)
+
+/* workspace_router.use(
+    '/:workspace_id/channels', 
+    channel_router
+) */
+
 export default workspace_router
+
+
+/* 
+/api/workspace/:workspace_id/channels
+
+*/

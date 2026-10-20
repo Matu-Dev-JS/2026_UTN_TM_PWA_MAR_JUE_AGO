@@ -42,6 +42,10 @@ class MemberRepository {
         .populate('fk_id_usuario', 'nombre email')
         console.log(result)
     }
+
+    async getMembershipByUserAndWorkspace (user_id, workspace_id){
+        return await Member.findOne({fk_id_usuario:user_id, fk_id_espacio_trabajo: workspace_id })
+    }
 }
 const member_repository = new MemberRepository()
 export default member_repository
