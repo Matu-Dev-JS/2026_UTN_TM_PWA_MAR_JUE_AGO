@@ -84,17 +84,47 @@ workspace_router.delete(
     }
 )
 
+workspace_router.put(
+    '/:workspace_id',
+    authMiddleware,
+    workspaceMiddleware(['owner', 'admin']),
+    async (request, response) => {
+        const { workspace_id } = request.params
+        const { name, description } = request.body
+        const workspace_updated = await workspace_repository.updateById(workspace_id, { name, description })
+        return response.status(200).send({
+            ok: true,
+            message: "Workspace actualizado correctamente",
+            status: 200,
+            data: {
+                workspace_updated
+            }
+        })
+    }
+)
+
+
 /* 
 Crear los endpoints 
 
 EJERCITACION PARA AHORA
-- (owner) DELETE /api/workspace/:workspace_id => Elimina espacio de trabajo
+- (owner) DELETE /api/workspace/:workspace_id => Elimina espacio de trabajo (HECHO)
 - (owner, admin) PUT /api/workspace/:workspace_id => Actualizar nombre/descripcion del espacio de trabajo
 
 Tarea:
 - (todos) get /api/workspace/:workspace_id/members
 - (owner, admin) DELETE /api/workspace/:workspace_id/members/:member_id
 - (owner, admin) POST /api/workspace/:workspace_id/members/invite
+    body: email (el email del usuario a invitar)
+    - Revisar que el rol con el que se crea sea 'admin' o 'user'
+    - Revisar que el usuario a invitar exista
+    - Revisar que no este ya agregado al workspace (que tenga una membresia)
+    - Crear la membresia con una propiedad 'invitacion_aceptada': false
+    - Enviar un mail con un link para "aceptar invitacion" (debe tener una expiracion y debe enviar un token)
+        - Ese link hara un GET hacia /api/workspace/:workspace_id/members/accept-invite/:invitation_token
+
+- (todos) Unauthentified /api/workspace/:workspace_id/members/accept-invite/:invitation_token
+    - Verifica que el invitation_token sea valido y edita la membersia para marcar que lo acepto
 */
 
 
