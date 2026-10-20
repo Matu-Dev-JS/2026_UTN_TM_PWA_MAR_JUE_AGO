@@ -10,6 +10,13 @@ class WorkspaceRepository {
         return await Workspace.findById(workspace_id)
     }
 
+    async deleteById (workspace_id){
+        await Workspace.findByIdAndDelete(workspace_id)
+    }
+
+    async updateById(workspace_id, update_data){
+        await Workspace.findByIdAndUpdate(workspace_id, update_data)
+    }
 }
 const workspace_repository = new WorkspaceRepository()
 export default workspace_repository
