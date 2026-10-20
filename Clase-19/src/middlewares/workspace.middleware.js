@@ -9,23 +9,40 @@ Validar que quien consulta sea parte de este espacio de trabajo
     Revisar que sea miembro de este workspace (que tenga membresia)
 Validar el rol de quien consulta
 */
-async function workspaceMiddleware ( request, response, next ){
+/* 
+valid_roles es un array con los tipos de roles validos para la consulta, el middleware evualuara si la membresia del usuario cumple con este requisito, sino bloqueara
+*/
+function workspaceMiddleware(valid_roles) {
 
-    const {workspace_id} = request.params
-    const workspace_selected = await workspace_repository.getById(workspace_id)
+    return async function
+        (request, response, next) {
 
-    const membership = await member_repository.getMembershipByUserAndWorkspace(request.user.id, workspace_id)
-    console.log('[WorkspaceMiddleware]:', membership, workspace_id, request.user)
+        const { workspace_id } = request.params
+        const workspace_selected = await workspace_repository.getById(workspace_id)
 
-    if(!workspace_selected){
-        throw new ServerError(
-            'Workspace no encontrado',
-            404
-        )
+        const membership = await member_repository.getMembershipByUserAndWorkspace(request.user.id, workspace_id)
+        console.log('[WorkspaceMiddleware]:', membership, workspace_id, request.user)
+
+        if (!workspace_selected) {
+            throw new ServerError(
+                'Workspace no encontrado',
+                404
+            )
+        }
+
+        if(valid_roles.length > 0 && !valid_roles.includes(membership.rol)){
+            throw new ServerError(
+                'No tienes permisos suficientes para hacer esta operacion',
+                403
+            )
+        }
+        request.workspace = workspace_selected
+        next()
     }
 
-    request.workspace = workspace_selected
-    next()
 }
+
+
+
 
 export default workspaceMiddleware

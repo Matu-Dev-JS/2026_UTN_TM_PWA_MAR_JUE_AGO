@@ -51,7 +51,7 @@ workspace_router.post(
 workspace_router.get(
     '/:workspace_id', 
     authMiddleware,
-    workspaceMiddleware,
+    workspaceMiddleware([]),
     async (request, response) => {
         
 
@@ -65,6 +65,8 @@ workspace_router.get(
         })
     }
 )
+
+
 
 /* workspace_router.use(
     '/:workspace_id/channels', 
