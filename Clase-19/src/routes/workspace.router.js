@@ -69,6 +69,7 @@ workspace_router.get(
 /* 
 Crear los endpoints 
 
+EJERCITACION PARA AHORA
 - (owner) DELETE /api/workspace/:workspace_id => Elimina espacio de trabajo
 - (owner, admin) PUT /api/workspace/:workspace_id => Actualizar nombre/descripcion del espacio de trabajo
 
