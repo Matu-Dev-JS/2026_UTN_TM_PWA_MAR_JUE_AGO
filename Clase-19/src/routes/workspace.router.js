@@ -66,6 +66,24 @@ workspace_router.get(
     }
 )
 
+workspace_router.delete(
+    '/:workspace_id',
+    authMiddleware,
+    workspaceMiddleware(['owner']),
+    async (request, response) => {
+        await  workspace_repository.deleteById(request.workspace._id)
+        await member_repository.deleteAllMembershipsByWorkspaceId(request.workspace._id)
+        return response.status(200).send({
+            ok: true,
+            message: "Workspace eliminado correctamente",
+            status: 200,
+            data: {
+                workspace_deleted: request.workspace
+            }
+        })
+    }
+)
+
 /* 
 Crear los endpoints 
 

@@ -46,6 +46,12 @@ class MemberRepository {
     async getMembershipByUserAndWorkspace (user_id, workspace_id){
         return await Member.findOne({fk_id_usuario:user_id, fk_id_espacio_trabajo: workspace_id })
     }
+
+
+    //Borrar las membresias de un espacio de trabajo
+    async deleteAllMembershipsByWorkspaceId(workspace_id){
+        await Member.deleteMany({fk_id_espacio_trabajo: workspace_id})
+    }
 }
 const member_repository = new MemberRepository()
 export default member_repository
