@@ -7,12 +7,28 @@ function LoginScreen() {
     const initial_state = {email: '', password: ''}
     const {formState, handleChangeInput} = useForm(initial_state)
 
-    function handleSubmit (event){
+    /* Cuando consultemos tendremos este estado que estara guardando como se hace esa consulta (En que estado esta) */
+    const [apiResponse, setApiResponse] = useState({response: null, error: null, loading: false})
+
+    async function handleSubmit (event){
         event.preventDefault()
         console.log('Usuario intenta iniciar sesion', formState)
+        try{
+            setApiResponse({loading: true, error: null, response: null})
+            const response = await login(formState.email, formState.password)
+            setApiResponse({loading: false, error: null, response: response})
+        }
+        catch (error){
+            //Si hubo fallo guardamos en el estado el mensaje de fallo
+            setApiResponse({loading: false, error: error.message, response: null})
+        }
+        
+
     }
 
-    login('prueba.utn.mail@gmail.com', 'Pepito1234')
+    console.log('[Estado de la consulta de login]:',apiResponse)
+
+    
     
     return (
         <div>
@@ -38,7 +54,16 @@ function LoginScreen() {
                         onChange={handleChangeInput} 
                     />
                 </div>
-                <button type='submit'>Iniciar sesion</button>
+                {
+                    apiResponse.error && !apiResponse.loading && <span style={{color: 'red'}}>ERROR: {apiResponse.error}</span>
+                }
+
+                {
+                    apiResponse.loading
+                    ? <button type='submit' disabled={true} >Cargando...</button>
+                    : <button type='submit'>Iniciar sesion</button>
+                }
+                
             </form>
         </div>
     )
