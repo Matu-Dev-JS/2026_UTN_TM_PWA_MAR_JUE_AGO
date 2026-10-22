@@ -19,20 +19,39 @@ class MemberRepository {
         console.log(result)
     }
 
+
+    /* 
+    formato: 
+        {
+            member_id,
+            member_role,
+            workspace_id,
+            workspace_name
+            workspace_fecha_creacion
+        }
+
+    */
     async getAllWorkspaceByUserId (user_id){
         //Traer todas las membresias de un usuario
         const result = await Member
         .find({fk_id_usuario: user_id})
+        .select('role fecha_creacion fk_id_espacio_trabajo')
         .populate(
             'fk_id_espacio_trabajo',
             'nombre fecha_creacion'
         )
 
-        /* 
-        populate permite expandir referencias,
-        OSEA SOLO ES VALIDO EN PROPIEDADES CON ref en el modelo
-        */
-        console.log(result)
+        return result.map(
+            membership => {
+                return {
+                    member_id: membership._id,
+                    member_rol: membership.rol,
+                    workspace_id: membership.fk_id_espacio_trabajo._id,
+                    workspace_nombre: membership.fk_id_espacio_trabajo.nombre,
+                    workspace_fecha_creacion: membership.fk_id_espacio_trabajo.fecha_creacion
+                }
+            }
+        )
     }
 
     //Traer todos miembros de un espacio de trabajo

@@ -23,6 +23,10 @@ const member_schema = new mongoose.Schema(
         fecha_creacion: {
             type: Date,
             default: Date.now
+        },
+        activo: {
+            type: mongoose.Schema.Types.Boolean,
+            default: false
         }
     }
 )

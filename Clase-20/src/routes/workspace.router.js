@@ -10,12 +10,25 @@ const workspace_router = express.Router()
 
 
 /* 
-Route /api/workspaces
-    POST / => Crear espacio de trabajo y membresia de creador
-    GET / => Obtener lista de espacios de trabajo asociados a un usuario (Buscamos las membresias asociadas a un cierto usuario)
-    GET /:workspace_id => Obtener los datos de un cierto espacio de trabajo
+(Authentified) GET /api/workspace
+    Traer la lista de espacios de trabajo asocidadas a ese usuario (basicamente sus membresias), con el rol de membresia en cada espacio de trabajo
 */
-
+workspace_router.get(
+    '/',
+    authMiddleware,
+    async (request, response) => {
+        
+        const workspaces_obtenidos = await member_repository.getAllWorkspaceByUserId(request.user.id)
+        return response.status(200).send({
+            ok:true,
+            message: "Obtenidos todos los datos",
+            status: 200,
+            data: {
+                workspaces: workspaces_obtenidos
+            }
+        })
+    }
+)
 
 workspace_router.post(
     '/',
@@ -91,7 +104,15 @@ workspace_router.put(
     async (request, response) => {
         const { workspace_id } = request.params
         const { name, description } = request.body
-        const workspace_updated = await workspace_repository.updateById(workspace_id, { nombre: name, description })
+
+        if(!name || !description){
+            throw new ServerError("name y description son campos requeridos", 400)
+        }
+
+        const workspace_updated = await workspace_repository.updateById(
+            workspace_id, 
+            { nombre: name, description }
+        )
         return response.status(200).send({
             ok: true,
             message: "Workspace actualizado correctamente",
@@ -126,6 +147,8 @@ Tarea:
 - (todos) Unauthentified /api/workspace/:workspace_id/members/accept-invite/:invitation_token
     - Verifica que el invitation_token sea valido y edita la membersia para marcar que lo acepto
 */
+
+
 
 
 
