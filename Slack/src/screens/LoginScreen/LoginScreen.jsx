@@ -68,6 +68,10 @@ function LoginScreen() {
                     : <button type='submit'>Iniciar sesion</button>
                 }
                 
+
+                {
+                    apiResponse.response && !apiResponse.loading && <span style={{color: 'greenyellow'}}>Inicio de sesion exitoso</span>
+                }
             </form>
         </div>
     )
