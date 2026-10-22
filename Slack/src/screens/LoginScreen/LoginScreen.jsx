@@ -55,7 +55,11 @@ function LoginScreen() {
                     />
                 </div>
                 {
-                    apiResponse.error && !apiResponse.loading && <span style={{color: 'red'}}>ERROR: {apiResponse.error}</span>
+                    apiResponse.error 
+                    && 
+                    !apiResponse.loading 
+                    && 
+                    <span style={{color: 'red'}}>{apiResponse.error}</span>
                 }
 
                 {
