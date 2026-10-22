@@ -15,13 +15,17 @@ import workspace_router from "./routes/workspace.router.js";
 import mailer_transporter from "./config/mailer.config.js";
 import ENVIRONMENT from "./config/environment.config.js";
 import user_repository from "./repositories/user.repository.js";
-
+import cors from 'cors'
 
 
 const PORT = 8080
 
 const app = express()
 
+/* 
+Deshabilita la cors policy = cualquiera puede consultar
+*/
+app.use(cors())
 
 app.use(express.json())
 

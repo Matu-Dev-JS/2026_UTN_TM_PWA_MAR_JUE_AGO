@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import useForm from '../../hooks/useForm'
+import { login } from '../../services/authService'
 
 function LoginScreen() {
     
@@ -10,6 +11,8 @@ function LoginScreen() {
         event.preventDefault()
         console.log('Usuario intenta iniciar sesion', formState)
     }
+
+    login('prueba.utn.mail@gmail.com', 'Pepito1234')
     
     return (
         <div>
